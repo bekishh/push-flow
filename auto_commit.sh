@@ -4,7 +4,7 @@
 cd /home/beqishh/push-flow || exit
 
 # Генерация случайного количества коммитов (от 65 до 76)
-commits_today=$((6000 + RANDOM % 12))
+commits_today=$((65 + RANDOM % 15))
 
 # Цикл для выполнения нужного количества коммитов
 for ((i=1; i<=commits_today; i++))
