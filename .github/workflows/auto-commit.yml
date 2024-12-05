@@ -5,22 +5,27 @@ on:
     - cron: "*/15 * * * *"
 
 jobs:
-  commit:
-    runs-on: ubuntu-latest
+  auto-commit:
+    runs-on: ubuntu-22.04
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Update file
+      - name: Configure git
         run: |
-          echo "$(date) - Auto update" >> auto_update.txt
+          git config user.name "GitHub Action"
+          git config user.email "action@github.com"
 
-      - name: Commit changes
+      - name: Make changes
         run: |
-          git config user.name "YourGitHubUsername"
-          git config user.email "your-email@example.com"
-          git add .
-          git commit -m "Auto commit on $(date)" || echo "No changes to commit"
+          echo "$(date) - Auto commit executed" >> auto_update.txt
+          git add auto_update.txt
+          git commit -m "Auto Commit - $(date)" || echo "No changes to commit"
 
       - name: Push changes
-        run: git push
+        env:
+          TOKEN: ${{ secrets.GH_TOKEN }}
+        run: |
+          git remote set-url origin https://x-access-token:${TOKEN}@github.com/bekishh/push-flow.git
+          git push
